@@ -4,7 +4,7 @@
 
 ### INSTALLATION
 
-`django==2.2` is supported. Install the `graphene-gis` with pip:
+`django==3.1` is supported along with graphene 3.0b6. Install the `graphene-gis` with pip:
 
 ```bash
 $ pip install graphene-gis
@@ -117,10 +117,13 @@ mutation {
 ```json
 "createPoint": {
     "point": {
-        "location": "{'type': 'Point', 'coordinates': [3.0, 5.0]}"
+        "location": {'type': 'Point', 'coordinates': [3.0, 5.0]}
     }
 }
 ```
+
+CAUTION: earlier versions of graphene-gis, the mutation would return the json string of the point
+rather than the actual object.  
 
 #### EXTRA STUFF
 

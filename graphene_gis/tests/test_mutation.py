@@ -1,6 +1,17 @@
 import json
 import graphene
 from graphene_gis import scalars
+from django.contrib.gis.geos import GEOSGeometry
+
+class FakeQuery(graphene.ObjectType):
+    class PointModelType(graphene.ObjectType):
+        location = graphene.Field(graphene.String, to=scalars.PointScalar())
+
+    point = graphene.Field(PointModelType)
+    fields = ["point"]
+
+    def resolve_point_model(self, info):
+        return info.location
 
 
 def test_should_mutate_gis_scalar_using_parse_literal():
@@ -9,18 +20,21 @@ def test_should_mutate_gis_scalar_using_parse_literal():
 
     class CreatePointModelType(graphene.Mutation):
         point = graphene.Field(PointModelType)
+        fields = ["point"]
 
         class Arguments:
             location = graphene.Argument(scalars.PointScalar)
 
         def mutate(root, info, location):
-            point = PointModelType(location=location)
-            return CreatePointModelType(point=point)
+            # result of the parseLiteral is the GEOS object, so we can directly pass to the output result.
+            result = CreatePointModelType(point=PointModelType(location=location))
+            #print(f"Result {result} and {result.point}")
+            return result
 
     class TestMutation(graphene.ObjectType):
         create_point = CreatePointModelType.Field()
 
-    schema = graphene.Schema(mutation=TestMutation)
+    schema = graphene.Schema(query=FakeQuery, mutation=TestMutation)
 
     query = """
         mutation {
@@ -34,7 +48,7 @@ def test_should_mutate_gis_scalar_using_parse_literal():
 
     expected = {
         "createPoint": {
-            "point": {"location": "{'type': 'Point', 'coordinates': [3.0, 5.0]}"}
+            "point": {"location": {'type': 'Point', 'coordinates': [3.0, 5.0]}}
         }
     }
 
@@ -66,7 +80,7 @@ def test_should_mutate_json_scalar_using_parse_literal():
     class Mutation(graphene.ObjectType):
         create_json = JSONMutation.Field()
 
-    schema = graphene.Schema(mutation=Mutation)
+    schema = graphene.Schema(query=FakeQuery, mutation=Mutation)
 
     mutation = """
         mutation JSONMutation{

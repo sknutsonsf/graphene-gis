@@ -17,9 +17,11 @@ class GISScalar(Scalar):
 
     @classmethod
     def parse_literal(cls, node):
-        assert isinstance(node, ast.StringValue)
+        assert isinstance(node, ast.StringValueNode)
         geometry = GEOSGeometry(node.value)
-        return eval(geometry.geojson)
+        # result = eval(geometry.geojson)
+        # Hmm, the older version return the result line above, which is NOT the geos object we want
+        return geometry
 
     @classmethod
     def parse_value(cls, node):

@@ -7,6 +7,7 @@ from graphene_gis.tests.mocks import PointModel, PointModelType
 def test_should_convert_gis_scalar_to_geojson():
     class Query(graphene.ObjectType):
         point_model = graphene.Field(PointModelType)
+        fields = ["point_model"]
 
         def resolve_point_model(self, info):
             return PointModel(location="POINT(34.2 54.3)")
@@ -38,6 +39,7 @@ def test_should_convert_gis_scalar_to_geojson():
 def test_should_convert_json_to_dict():
     class Query(graphene.ObjectType):
         point_model = graphene.Field(PointModelType)
+        fields = ["point_model"]
 
         def resolve_point_model(self, info):
             return PointModel(location="POINT(34.2 54.3)",

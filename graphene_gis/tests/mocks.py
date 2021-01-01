@@ -13,3 +13,4 @@ class PointModel(gis_models.Model):
 class PointModelType(DjangoObjectType):
     class Meta:
         model = PointModel
+        fields = '__all__'
