@@ -7,8 +7,8 @@ tests_require = [
 ]
 
 dev_requires = [
-    "black==19.3b0",
-    "flake8==3.7.8",
+    "black>=19.3b0",
+    "flake8>=3.7.8",
 ] + tests_require
 
 with open("README.md", "r") as desc:
@@ -16,18 +16,18 @@ with open("README.md", "r") as desc:
 
 setup(
     name="graphene-gis",
-    version="0.0.5b",
+    version="3.0b6",
     description="GIS support for graphene-django",
     long_description_content_type='text/markdown',
-    url="https://github.com/EverWinter23/graphene-gis",
+    url="https://github.com/sknutson/graphene-gis",
     long_description=long_description,
     keywords="api graphql graphene geos gis",
     packages=find_packages(exclude=["tests"]),
     author="Rishabh Mehta",
     author_email="eternal.blizzard23@gmail.com",
     install_requires=[
-        "graphene>=3.0.0b1,<4",
-        "graphene-django>=3.0,<4",
+        "graphene>=3.0.0b6,<4",
+        "graphene-django>=3.0b6,<4",
         "graphql-core>=3.1,<4",
         "psycopg2>=2.8,<3"
     ],
